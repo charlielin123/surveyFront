@@ -37,7 +37,8 @@ const state = reactive({
   isChecked: isChecked,
   inputValue: '',
   hasInput: false,
-  labelSplit: ['']
+  labelSplit: [''],
+  selected: []
 })
 
 const middle = computed({
@@ -51,19 +52,20 @@ const middle = computed({
 
 const lastValue = computed(() => {
   let output = ''
-  if (!state.hasInput) {
-    output = props.label ?? ''
-  } else {
-    state.labelSplit.forEach((s: string) => {
-      if (s.includes('&input')) {
-        output += `%&${state.inputValue}%`
-      } else {
-        output += s
-      }
-    })
+  state.labelSplit.forEach((s: string) => {
+    if (s.includes('&input')) {
+      output += `%&${state.inputValue}%`
+    } else if (s.includes('&select')) {
+      output += ''
+    } else {
+      output += s
+    }
+  })
+  if (state.selected.length > 0) {
+    output = output + '%&select' + JSON.stringify(state.selected) + '%'
   }
 
-  return props.optionNum + ' - ' + output
+  return props.optionNum + '-' + output
 })
 const convertJSON = (str: string) => {
   try {
@@ -96,7 +98,6 @@ const updateValue = async () => {
 }
 
 const inputId = generateId()
-const addition = reactive<any[]>([])
 
 const customLabel = computed(() => {
   return () =>
@@ -120,15 +121,34 @@ const customLabel = computed(() => {
       } else if (l.startsWith('&select')) {
         const objStr = l.replace('&select', '')
         const obj = convertJSON(objStr)
-        addition.push({ select: [] })
-        const index = addition.length - 1
-        return h(
-          'div',
-          { class: 'dS' },
-          obj?.options?.map((i) => {
-            return h('div', [h('input', { type: 'checkbox', value: i }), h('label', i)])
-          })
-        )
+        return isChecked.value
+          ? h(
+              'div',
+              { class: 'dS' },
+              obj?.options?.map((i) => {
+                const id = generateId()
+                return h('div', [
+                  h('input', {
+                    type: 'checkbox',
+                    value: i,
+                    id: id,
+                    onInput: (e: Event) => {
+                      const target = e.target as HTMLInputElement
+                      if (target.checked) {
+                        state.selected.push(i)
+                      } else {
+                        state.selected = state.selected.filter((s) => {
+                          return s !== i
+                        })
+                      }
+                      updateValue()
+                    }
+                  }),
+                  h('label', { for: id }, i)
+                ])
+              })
+            )
+          : ''
       } else {
         return l
       }

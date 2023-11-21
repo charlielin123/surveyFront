@@ -1,239 +1,11 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { onMounted, reactive, type UnwrapNestedRefs, h, computed, ref, provide } from 'vue'
-// import { api } from '@/utils/api'
+import { api } from '@/utils/api'
 import sSelect from '@/components/options/s-select.vue'
-import sOption from '@/components/options/s-option.vue'
-
-const route = useRoute()
-const form: UnwrapNestedRefs<{ name: string; template: SurveyOption[] }> = reactive(
-  {} as { name: string; template: SurveyOption[] }
-)
-enum AgeGroup {
-  /**
-   * 學齡前
-   */
-  PRESCHOOL = 'PRESCHOOL',
-  /**
-   * 小學
-   * */
-  ELEMENTARY = 'ELEMENTARY',
-  /**
-   * 國學
-   */
-  JUNIOR_HIGH = 'JUNIOR_HIGH',
-  /**
-   * 高中
-   */
-  HIGH_SCHOOL = 'HIGH_SCHOOL',
-  /**
-   * 大專
-   */
-  COLLEGE = 'COLLEGE'
-}
-
-enum SurveyOptionType {
-  text,
-  select,
-  radio
-}
-interface SurveyOption {
-  type: SurveyOptionType
-  label: string
-  name: string
-  option: any[]
-  required: boolean
-  value?: any
-}
-
-onMounted(async () => {})
-
-interface BigQ {
-  label: string
-  idx: string
-  questions: Question[]
-  ageArea: AgeGroup[]
-}
-
-class Question {
-  /**
-   * 題號
-   */
-  idx: string
-  type: string
-  question: string
-  option: string[]
-
-  constructor(idx: string, type: string, question: string, option: string[]) {
-    this.idx = idx
-    this.type = type
-    this.question = question
-    this.option = option
-  }
-}
-const q1: BigQ = {
-  /**
-   * 題號
-   */
-  idx: '1',
-  label: '兒少在[平日/開學期間]用餐情形',
-  ageArea: [
-    AgeGroup.PRESCHOOL,
-    AgeGroup.ELEMENTARY,
-    AgeGroup.JUNIOR_HIGH,
-    AgeGroup.HIGH_SCHOOL,
-    AgeGroup.COLLEGE
-  ],
-  questions: [
-    new Question('1-1', 'single', '早餐', [
-      '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
-      '幾乎沒吃'
-    ]),
-    new Question('1-2', 'single', '午餐', [
-      '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
-      '幾乎沒吃'
-    ]),
-    new Question('1-3', 'single', '晚餐', [
-      '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
-      '幾乎沒吃'
-    ]),
-    new Question('1-4', 'multiple', '兒少未吃三餐的主要原因[可複選]', [
-      '都有吃，不適用',
-      '沒有時間吃',
-      '沒有習慣吃',
-      '吃不下',
-      '家裡沒有準備',
-      '減肥',
-      '為了省錢',
-      '其他(請說明)%&input%'
-    ]),
-    new Question('1-5', 'multiple', '兒少三餐通常如何獲取', [
-      '同住家人準備',
-      '到親戚家吃',
-      '自己煮',
-      '自己買',
-      '學校/名間團體提供',
-      '不固定，有甚麼吃甚麼',
-      '其他(請說明)%&input%'
-    ]),
-    new Question('1-6', 'single', '兒少是否經常(一周超過三天)吃不具營養價值的食物當作正餐', [
-      '否',
-      '是 (請勾選下列項目，可複選)%&select{"options":["泡麵、罐頭食品","速食類","炸物","含糖飲料","零食、點心","其他"]}%'
-    ])
-  ]
-}
-
-const q2: BigQ = {
-  /**
-   * 題號
-   */
-  idx: '2',
-  label: '兒少在[寒暑假]用餐情形',
-  ageArea: [
-    AgeGroup.PRESCHOOL,
-    AgeGroup.ELEMENTARY,
-    AgeGroup.JUNIOR_HIGH,
-    AgeGroup.HIGH_SCHOOL,
-    AgeGroup.COLLEGE
-  ],
-  questions: [
-    new Question('2-1', 'single', '早餐', [
-      '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
-      '幾乎沒吃'
-    ]),
-    new Question('2-2', 'single', '午餐', [
-      '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
-      '幾乎沒吃'
-    ]),
-    new Question('2-3', 'single', '晚餐', [
-      '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
-      '幾乎沒吃'
-    ]),
-    new Question('2-4', 'multiple', '兒少未吃三餐的主要原因[可複選]', [
-      '都有吃，不適用',
-      '沒有時間吃',
-      '沒有習慣吃',
-      '吃不下',
-      '家裡沒有準備',
-      '減肥',
-      '為了省錢',
-      '其他(請說明)%&input%'
-    ]),
-    new Question('2-5', 'multiple', '兒少三餐通常如何獲取', [
-      '同住家人準備',
-      '到親戚家吃',
-      '自己煮',
-      '自己買',
-      '學校/名間團體提供',
-      '不固定，有甚麼吃甚麼',
-      '其他(請說明)%&input%'
-    ]),
-    new Question('2-6', 'single', '兒少是否經常(一周超過三天)吃不具營養價值的食物當作正餐', [
-      '否',
-      '是 (請勾選下列項目，可複選)%&select{"options":["泡麵、罐頭食品","速食類","炸物","含糖飲料","零食、點心","其他"]}%'
-    ])
-  ]
-}
-const q3: BigQ = {
-  /**
-   * 題號
-   */
-  idx: '3',
-  label: '兒少每天平均睡眠時間',
-  ageArea: [
-    AgeGroup.PRESCHOOL,
-    AgeGroup.ELEMENTARY,
-    AgeGroup.JUNIOR_HIGH,
-    AgeGroup.HIGH_SCHOOL,
-    AgeGroup.COLLEGE
-  ],
-  questions: [new Question('3-1', 'single', '', ['少於5小時', '5-7小時', '8-10小時', '超過10小時'])]
-}
-const q4: BigQ = {
-  /**
-   * 題號
-   */
-  idx: '4',
-  label: '兒少目前生活，感到困擾的事情有哪些[可複選]',
-  ageArea: [
-    AgeGroup.PRESCHOOL,
-    AgeGroup.ELEMENTARY,
-    AgeGroup.JUNIOR_HIGH,
-    AgeGroup.HIGH_SCHOOL,
-    AgeGroup.COLLEGE
-  ],
-  questions: [
-    new Question('4-1', 'multiple', '', [
-      '完全沒有',
-      '學校課業',
-      '健康疾病',
-      '選擇就讀學校',
-      '親子關係',
-      '手足互動',
-      '師生互動',
-      '交友人際',
-      '感情問題',
-      '容貌外表',
-      '未來前途',
-      '選擇或尋找工作',
-      '同儕欺凌',
-      '家庭經濟問題',
-      '零用錢不夠',
-      '父母親感情不佳',
-      '其他(請說明)%&input%'
-    ])
-  ]
-}
-
-const allQ: BigQ[] = [q1, q2, q3, q4]
+import { allQ, type BigQ, type Question, AgeGroup } from '@/static/QQ'
 const name = ref('')
-const selectAgeArea = ref('')
+const selectAgeArea = ref<AgeGroup>('' as AgeGroup)
 provide('selectAgeArea', selectAgeArea)
 const ans = reactive<{ [key: string]: any }>({})
 allQ.forEach((item: BigQ) => {
@@ -248,11 +20,26 @@ allQ.forEach((item: BigQ) => {
 })
 
 const submit = () => {
-  const form = {
-    name: name.value,
-    ans2: ans
+  let reqAns: { [key: string]: any } = {}
+
+  for (const i in ans) {
+    for (const j in ans[i]) {
+      const val = ans[i][j]
+      if (val instanceof Array && val.length > 0) {
+        reqAns[j] = val
+      } else if (val && Object.keys(val).length > 0) {
+        reqAns[j] = val
+      }
+    }
   }
-  console.log(form)
+  const form = {
+    userName: name.value,
+    answer: reqAns
+  }
+  api.post('/survey', form).then((res) => {
+    console.log(res)
+  })
+  // console.log(form)
 }
 </script>
 
@@ -274,16 +61,20 @@ const submit = () => {
     </div>
     <div class="big">
       <template v-for="bigQ in allQ" :key="'big' + bigQ.idx">
-        <label class="big-title">{{ bigQ.label }}</label>
-        <template v-for="smallQ in bigQ.questions" :key="smallQ.idx">
-          <s-select
-            v-model="ans[bigQ.idx][smallQ.idx]"
-            :type="smallQ.type"
-            :options="smallQ.option"
-            :questionNum="smallQ.idx"
-            :question="smallQ.question"
-            :multiple="smallQ.type == 'multiple'"
-          ></s-select>
+        <template v-if="bigQ.ageArea.includes(selectAgeArea)">
+          <div class="big-q">
+            <h3 class="big-title">{{ bigQ.label }}</h3>
+            <template v-for="smallQ in bigQ.questions" :key="smallQ.idx">
+              <s-select
+                v-model="ans[bigQ.idx][smallQ.idx]"
+                :type="smallQ.type"
+                :options="smallQ.option"
+                :questionNum="smallQ.idx"
+                :question="smallQ.question"
+                :multiple="smallQ.type == 'multiple'"
+              ></s-select>
+            </template>
+          </div>
         </template>
       </template>
     </div>
@@ -338,6 +129,9 @@ const submit = () => {
     .big-title {
       font-weight: 600;
       font-size: 1.5rem;
+      position: sticky;
+      top: 0;
+      background-color: rgb(174, 255, 0);
     }
     border-radius: 8px;
     margin: 1rem auto;

@@ -38,7 +38,7 @@ const state = reactive({
   inputValue: '',
   hasInput: false,
   labelSplit: [''],
-  selected: []
+  selected: [] as string[]
 })
 
 const middle = computed({
@@ -125,7 +125,7 @@ const customLabel = computed(() => {
           ? h(
               'div',
               { class: 'dS' },
-              obj?.options?.map((i) => {
+              obj?.options?.map((i:string) => {
                 const id = generateId()
                 return h('div', [
                   h('input', {

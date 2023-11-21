@@ -51,7 +51,7 @@ const middleValue = computed({
 
 <template>
   <div>
-    <h3>{{ (questionNum ?? '') + question }}</h3>
+    <h3 class="small-q">{{ (questionNum ?? '') + question }}</h3>
     <template v-for="(option, index) in options" :key="option">
       <div class="option">
         <sOption
@@ -67,6 +67,11 @@ const middleValue = computed({
 </template>
 
 <style lang="scss">
+.small-q{
+  position: sticky;
+  top: 2rem;
+  background-color: beige;
+}
 .option {
   padding: 0.5rem 0;
   display: flex;

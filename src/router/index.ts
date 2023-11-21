@@ -13,6 +13,11 @@ const router = createRouter({
       path: '/survey/demo0001',
       name: 'survey',
       component: () => import('../views/Survey-com.vue')
+    },
+    {
+      path: '/survey/bak',
+      name: 'surveyB',
+      component: () => import('../views/backView.vue')
     }
   ]
 })

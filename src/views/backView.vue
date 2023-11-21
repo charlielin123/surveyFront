@@ -4,8 +4,8 @@ import { api } from '@/utils/api'
 import { onMounted, reactive } from 'vue'
 
 const state = reactive({
-  list: [] as { id: number; userName: string; createdAt: string; answer: [] }[],
-  selected: {}
+  list: [] as { id: number; userName: string; createdAt: string; answer: Array<string|[]> }[],
+  selected: {} as { [key: string]: any }
 })
 
 const getDateStr = (dateStr: string) => {
@@ -23,7 +23,7 @@ const getDateStr = (dateStr: string) => {
   )
 }
 
-const fix = (target: string | Array<string>) => {
+const fix = (target: string | Array<string>): string | Array<string> => {
   if (!target) {
     return ''
   }
@@ -35,7 +35,7 @@ const fix = (target: string | Array<string>) => {
         return r
       })
       .sort((a, b) => {
-        return a.split('-')[0] - b.split('-')[0] 
+        return Number.parseInt(a.split('-')[0]) - Number.parseInt(b.split('-')[0])
       })
   }
   const arr = target.split('%')
@@ -83,8 +83,8 @@ onMounted(() => {
       <div v-for="sq in bq.questions" :key="sq.idx" class="sq">
         <template v-if="state.selected[sq.idx]">
           <h4>{{ sq.idx }} {{ sq.question }}</h4>
-          <template v-if="Array.isArray(state.selected[sq.idx])">
-            <div v-for="i in fix(state.selected[sq.idx])" class="answer" v-html="i"></div>
+          <template v-if="Array.isArray(state.selected[sq.idx])" >
+            <div v-for="i in fix(state.selected[sq.idx])" class="answer" v-html="i" :key="i"></div>
           </template>
           <div v-else class="answer" v-html="fix(state.selected[sq.idx])"></div>
         </template>

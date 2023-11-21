@@ -81,9 +81,7 @@ const submit = () => {
     <div class="button-box">
       <button class="btn btn-submit" @click="submit">送出</button>
     </div>
-    <div>
-      {{ ans }}
-    </div>
+
   </div>
 </template>
 

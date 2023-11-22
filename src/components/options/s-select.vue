@@ -68,12 +68,15 @@ const middleValue = computed({
 
 <style lang="scss">
 .small-q{
-  position: sticky;
   top: 2rem;
-  background-color: beige;
+  z-index: 2;
+  background-color: rgb(255, 234, 196);
+  border-radius: 10px 10px 0 0;    padding: .5rem 0;
+
 }
 .option {
   padding: 0.5rem 0;
+  padding-left: 2rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -87,10 +90,17 @@ const middleValue = computed({
   input {
     height: 1.5rem;
     border: solid 1px orange;
+    border-radius: 5px;
   }
   input.days {
     width: 2rem;
     text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .option{
+    padding-left: .5rem;
   }
 }
 </style>

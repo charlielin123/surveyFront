@@ -176,6 +176,7 @@ onMounted(() => {
 .select {
   display: flex;
   align-items: center;
+  gap: .5rem;
 }
 
 .dS {

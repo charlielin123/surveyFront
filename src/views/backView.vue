@@ -87,10 +87,17 @@ onMounted(() => {
   <div class="login-box" v-if="!state.isLogin">
     <input type="text" placeholder="請輸入帳號" v-model="loginForm.userName" />
     <input type="password" placeholder="請輸入密碼" v-model="loginForm.password" />
-    <button @click="loginForm.submit()">登入</button>
+    <button
+      @click="
+        () => {
+          loginForm.submit()
+        }
+      "
+    >
+      登入
+    </button>
   </div>
   <template v-else>
-
     <div class="select">
       <select name="" id="" v-model="state.selected">
         <template v-for="item in state.list" :key="item.id">
@@ -100,7 +107,7 @@ onMounted(() => {
         </template>
       </select>
     </div>
-  
+
     <div class="contain">
       <div v-for="bq in allQ" :key="bq.idx" class="bg">
         <h3>{{ bq.label }}</h3>
@@ -108,7 +115,12 @@ onMounted(() => {
           <template v-if="state.selected[sq.idx]">
             <h4>{{ sq.idx }} {{ sq.question }}</h4>
             <template v-if="Array.isArray(state.selected[sq.idx])">
-              <div v-for="i in fix(state.selected[sq.idx])" class="answer" v-html="i" :key="i"></div>
+              <div
+                v-for="i in fix(state.selected[sq.idx])"
+                class="answer"
+                v-html="i"
+                :key="i"
+              ></div>
             </template>
             <div v-else class="answer" v-html="fix(state.selected[sq.idx])"></div>
           </template>
@@ -119,30 +131,28 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
-.login-box{
+.login-box {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  input{
+  input {
     margin: 1rem;
     padding: 1rem;
-
   }
 }
-.select{
+.select {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem 0;
-  select{
+  select {
     width: 80%;
     padding: 1rem;
     text-align: center;
   }
-
 }
 .contain {
   padding: 3rem;

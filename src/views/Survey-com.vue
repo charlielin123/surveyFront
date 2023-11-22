@@ -51,7 +51,8 @@ const submit = () => {
   }
   api.post('/survey', form).then((res) => {
     alert('送出成功')
-    location.reload()
+    console.log(res)
+    // location.reload()
   })
 }
 </script>

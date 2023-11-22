@@ -87,7 +87,7 @@ onMounted(() => {
   <div class="login-box" v-if="!state.isLogin">
     <input type="text" placeholder="請輸入帳號" v-model="loginForm.userName" />
     <input type="password" placeholder="請輸入密碼" v-model="loginForm.password" />
-    <button @click="state.isLogin = true">登入</button>
+    <button @click="loginForm.submit">登入</button>
   </div>
   <template v-else>
 

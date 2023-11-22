@@ -68,7 +68,7 @@ const submit = () => {
         <label for="">年齡層：</label>
         <select name="" id="" v-model="selectAgeArea">
           <option value="">請選擇年齡層</option>
-          <option value="PRESCHOOL">學齡前</option>
+          <option value="PRESCHOOL">幼兒園</option>
           <option value="ELEMENTARY">國小</option>
           <option value="JUNIOR_HIGH">國中</option>
           <option value="HIGH_SCHOOL">高中</option>

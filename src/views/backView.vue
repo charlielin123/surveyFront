@@ -4,8 +4,25 @@ import { api } from '@/utils/api'
 import { onMounted, reactive } from 'vue'
 
 const state = reactive({
-  list: [] as { id: number; userName: string; createdAt: string; answer: Array<string|[]> }[],
-  selected: {} as { [key: string]: any }
+  list: [] as { id: number; userName: string; createdAt: string; answer: Array<string | []> }[],
+  selected: {} as { [key: string]: any },
+  isLogin: false
+})
+const loginForm = reactive({
+  userName: '',
+  password: '',
+  submit() {
+    api
+      .post('/survey/pickList', { userName: loginForm.userName, password: loginForm.password })
+      .then((res) => {
+        if (res.data?.noAuth) {
+          alert(res.data?.noAuth)
+          return
+        }
+        state.list = res?.data
+        state.isLogin = true
+      })
+  }
 })
 
 const getDateStr = (dateStr: string) => {
@@ -60,40 +77,73 @@ const fix = (target: string | Array<string>): string | Array<string> => {
 }
 
 onMounted(() => {
-  api.get('/survey/pickList').then((res) => {
-    state.list = res.data
-  })
+  // api.get('/survey/pickList').then((res) => {
+  //   state.list = res.data
+  // })
 })
 </script>
 
 <template>
-  <div>
-    <select name="" id="" v-model="state.selected">
-      <template v-for="item in state.list" :key="item.id">
-        <option :value="item.answer[0]">
-          {{ item.userName + '-' + getDateStr(item.createdAt) }}
-        </option>
-      </template>
-    </select>
+  <div class="login-box" v-if="!state.isLogin">
+    <input type="text" placeholder="請輸入帳號" v-model="loginForm.userName" />
+    <input type="password" placeholder="請輸入密碼" v-model="loginForm.password" />
+    <button @click="state.isLogin = true">登入</button>
   </div>
+  <template v-else>
 
-  <div class="contain">
-    <div v-for="bq in allQ" :key="bq.idx" class="bg">
-      <h3>{{ bq.label }}</h3>
-      <div v-for="sq in bq.questions" :key="sq.idx" class="sq">
-        <template v-if="state.selected[sq.idx]">
-          <h4>{{ sq.idx }} {{ sq.question }}</h4>
-          <template v-if="Array.isArray(state.selected[sq.idx])" >
-            <div v-for="i in fix(state.selected[sq.idx])" class="answer" v-html="i" :key="i"></div>
-          </template>
-          <div v-else class="answer" v-html="fix(state.selected[sq.idx])"></div>
+    <div class="select">
+      <select name="" id="" v-model="state.selected">
+        <template v-for="item in state.list" :key="item.id">
+          <option :value="item.answer[0]">
+            {{ item.userName + '-' + getDateStr(item.createdAt) }}
+          </option>
         </template>
+      </select>
+    </div>
+  
+    <div class="contain">
+      <div v-for="bq in allQ" :key="bq.idx" class="bg">
+        <h3>{{ bq.label }}</h3>
+        <div v-for="sq in bq.questions" :key="sq.idx" class="sq">
+          <template v-if="state.selected[sq.idx]">
+            <h4>{{ sq.idx }} {{ sq.question }}</h4>
+            <template v-if="Array.isArray(state.selected[sq.idx])">
+              <div v-for="i in fix(state.selected[sq.idx])" class="answer" v-html="i" :key="i"></div>
+            </template>
+            <div v-else class="answer" v-html="fix(state.selected[sq.idx])"></div>
+          </template>
+        </div>
       </div>
     </div>
-  </div>
+  </template>
 </template>
 
 <style lang="scss">
+.login-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  input{
+    margin: 1rem;
+    padding: 1rem;
+
+  }
+}
+.select{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+  select{
+    width: 80%;
+    padding: 1rem;
+    text-align: center;
+  }
+
+}
 .contain {
   padding: 3rem;
 }

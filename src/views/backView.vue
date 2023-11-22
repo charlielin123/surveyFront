@@ -87,14 +87,14 @@ onMounted(() => {
   <div class="login-box" v-if="!state.isLogin">
     <input type="text" placeholder="請輸入帳號" v-model="loginForm.userName" />
     <input type="password" placeholder="請輸入密碼" v-model="loginForm.password" />
-    <button @click="loginForm.submit">登入</button>
+    <button @click="loginForm.submit()">登入</button>
   </div>
   <template v-else>
 
     <div class="select">
       <select name="" id="" v-model="state.selected">
         <template v-for="item in state.list" :key="item.id">
-          <option :value="item.answer[0]">
+          <option :value="item.answer?.[0]">
             {{ item.userName + '-' + getDateStr(item.createdAt) }}
           </option>
         </template>

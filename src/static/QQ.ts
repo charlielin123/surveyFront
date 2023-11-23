@@ -417,7 +417,7 @@ const q14: BigQ = {
    * 題號
    */
   idx: '14',
-  label: '兒少目前有無正在交往中的男 / 女朋友？',
+  label: '14 兒少是否與交往中男/女朋友發生衝突？',
   ageArea: [AgeGroup.ELEMENTARY, AgeGroup.JUNIOR_HIGH, AgeGroup.HIGH_SCHOOL, AgeGroup.COLLEGE],
   questions: [new Question('14-1', 'single', '', ['從未', '很少', '有時候', '經常', '不確定'])]
 }
@@ -644,7 +644,7 @@ const q23: BigQ = {
     // AgeGroup.COLLEGE
   ],
   questions: [
-    new Question('23-1', 'single', '', [
+    new Question('23-1', 'multiple', '', [
       '父母',
       '兄弟姊妹',
       '其他同住家人',

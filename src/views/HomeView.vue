@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
 import { RouterLink, RouterView } from 'vue-router';
 import {ref} from 'vue';
 const test=ref('')
@@ -10,6 +9,5 @@ const test=ref('')
   {{ test }}
   <RouterLink :to="{ name: 'survey' }">link</RouterLink>
   <main>
-    <TheWelcome />
   </main>
 </template>

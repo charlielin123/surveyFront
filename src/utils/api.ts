@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'https://www.handsomecharlie.xyz/',
+  baseURL: 'https://handsomecharlie.xyz/',
   // baseURL: 'http://localhost:8888',
   timeout: 20000, // 请求超时设置
   withCredentials: false, // 跨域请求是否需要携带 cookie

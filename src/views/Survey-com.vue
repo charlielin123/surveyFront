@@ -153,10 +153,10 @@ const submit = () => {
       font-size: 1.5rem;
       position: sticky;
       top: 0;
-      background-color: rgb(216, 255, 132);
+      background-color: white;
       
     }
-    border-radius: 8px;
+    border-radius: 10px;
     margin: 1rem auto;
     display: flex;
     flex-direction: column;
@@ -169,6 +169,7 @@ const submit = () => {
     & > div {
       border: solid rgba(128, 128, 128, 0.53);
       border-radius: 10px;
+      overflow: hidden;
       margin: 1rem 0;
     }
   }

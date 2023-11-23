@@ -152,6 +152,9 @@ onMounted(() => {
     width: 80%;
     padding: 1rem;
     text-align: center;
+    option{
+      padding: 1rem;
+    }
   }
 }
 .contain {

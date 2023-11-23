@@ -67,12 +67,12 @@ const middleValue = computed({
 </template>
 
 <style lang="scss">
-.small-q{
+.small-q {
   top: 2rem;
   z-index: 2;
-  background-color: rgb(255, 234, 196);
-  border-radius: 10px 10px 0 0;    padding: .5rem 0;
-
+  background-color: rgba(128, 128, 128, 0.607);
+  // border-radius: 10px 10px 0 0;
+  padding: 0.5rem 0;
 }
 .option {
   padding: 0.5rem 0;
@@ -99,8 +99,8 @@ const middleValue = computed({
 }
 
 @media (max-width: 768px) {
-  .option{
-    padding-left: .5rem;
+  .option {
+    padding-left: 0.5rem;
   }
 }
 </style>

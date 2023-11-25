@@ -50,14 +50,14 @@ export class Question {
   type: string
   question: string
   option: string[]
-  require: { idx: string; ansIdx: string } | null = null
+  require: { idx: string; ansIdx: string | string[] } | null = null
 
   constructor(
     idx: string,
     type: string,
     question: string,
     option: string[],
-    require?: { idx: string; ansIdx: string|string[] }
+    require?: { idx: string; ansIdx: string | string[] }
   ) {
     this.idx = idx
     this.type = type
@@ -433,7 +433,12 @@ const q14: BigQ = {
   idx: '14',
   label: '14 兒少是否與交往中男/女朋友發生衝突？',
   ageArea: [AgeGroup.ELEMENTARY, AgeGroup.JUNIOR_HIGH, AgeGroup.HIGH_SCHOOL, AgeGroup.COLLEGE],
-  questions: [new Question('14-1', 'single', '', ['從未', '很少', '有時候', '經常', '不確定'],{ idx: '13-1', ansIdx: '1'}),]
+  questions: [
+    new Question('14-1', 'single', '', ['從未', '很少', '有時候', '經常', '不確定'], {
+      idx: '13-1',
+      ansIdx: '1'
+    })
+  ]
 }
 const q15: BigQ = {
   /**
@@ -786,14 +791,20 @@ const q28: BigQ = {
     AgeGroup.COLLEGE
   ],
   questions: [
-    new Question('28-1', 'multiple', '', [
-      '全職工作',
-      '學期中課餘時間打工',
-      '寒暑假打工',
-      '無固定上班時間',
-      '建教合作',
-      '其他，請說明%&input%'
-    ],{idx:'27-1',ansIdx:'1'}),
+    new Question(
+      '28-1',
+      'multiple',
+      '',
+      [
+        '全職工作',
+        '學期中課餘時間打工',
+        '寒暑假打工',
+        '無固定上班時間',
+        '建教合作',
+        '其他，請說明%&input%'
+      ],
+      { idx: '27-1', ansIdx: '1' }
+    )
   ]
 }
 const q29: BigQ = {
@@ -810,13 +821,19 @@ const q29: BigQ = {
     AgeGroup.COLLEGE
   ],
   questions: [
-    new Question('29-1', 'multiple', '', [
-      '行政類（如：文書處理、總機等',
-      '服務類（如：收銀員、接待、加油站、餐飲等',
-      '勞務類（如：體力工、清潔工、農林漁牧類工作等',
-      '教學類（如：家教、補習班老師等',
-      '其他 ( 請說明 )%&input%'
-    ],{idx:'27-1',ansIdx:'1'})
+    new Question(
+      '29-1',
+      'multiple',
+      '',
+      [
+        '行政類（如：文書處理、總機等',
+        '服務類（如：收銀員、接待、加油站、餐飲等',
+        '勞務類（如：體力工、清潔工、農林漁牧類工作等',
+        '教學類（如：家教、補習班老師等',
+        '其他 ( 請說明 )%&input%'
+      ],
+      { idx: '27-1', ansIdx: '1' }
+    )
   ]
 }
 
@@ -834,13 +851,13 @@ const q30: BigQ = {
     AgeGroup.COLLEGE
   ],
   questions: [
-    new Question('30-1', 'single', '', [
-      '10小時以下',
-      '10-20小時',
-      '20-30小時',
-      '30-40小時',
-      '40小時以上'
-    ],{idx:'27-1',ansIdx:'1'})
+    new Question(
+      '30-1',
+      'single',
+      '',
+      ['10小時以下', '10-20小時', '20-30小時', '30-40小時', '40小時以上'],
+      { idx: '27-1', ansIdx: '1' }
+    )
   ]
 }
 const q31: BigQ = {
@@ -856,7 +873,12 @@ const q31: BigQ = {
     AgeGroup.HIGH_SCHOOL,
     AgeGroup.COLLEGE
   ],
-  questions: [new Question('31-1', 'single', '', ['%&input{"type": "number"}%元'],{idx:'27-1',ansIdx:'1'})]
+  questions: [
+    new Question('31-1', 'single', '', ['%&input{"type": "number"}%元'], {
+      idx: '27-1',
+      ansIdx: '1'
+    })
+  ]
 }
 const q32: BigQ = {
   /**
@@ -872,16 +894,22 @@ const q32: BigQ = {
     AgeGroup.COLLEGE
   ],
   questions: [
-    new Question('32-1', 'multiple', '', [
-      '貼補家用',
-      '用在學雜費',
-      '用於生活上的基本開銷(食宿、交通等)',
-      '買自己想要的東西',
-      '做自己想做的事',
-      '儲蓄',
-      '增加社會經驗',
-      '其他(請說明)%&input%'
-    ],{idx:'27-1',ansIdx:'1'})
+    new Question(
+      '32-1',
+      'multiple',
+      '',
+      [
+        '貼補家用',
+        '用在學雜費',
+        '用於生活上的基本開銷(食宿、交通等)',
+        '買自己想要的東西',
+        '做自己想做的事',
+        '儲蓄',
+        '增加社會經驗',
+        '其他(請說明)%&input%'
+      ],
+      { idx: '27-1', ansIdx: '1' }
+    )
   ]
 }
 
@@ -1032,15 +1060,21 @@ const q38: BigQ = {
     AgeGroup.COLLEGE
   ],
   questions: [
-    new Question('38-1', 'single', '', [
-      '經濟因素',
-      '健康因素',
-      '對念書沒有興趣',
-      '不知道自己要讀甚麼樣的學校/科系',
-      '想先出社會累積經驗',
-      '現正就讀大專，無意升學就讀研究所',
-      '其他(請說明)%&input%'
-    ],{idx:'37-1',ansIdx:['2','3']})
+    new Question(
+      '38-1',
+      'single',
+      '',
+      [
+        '經濟因素',
+        '健康因素',
+        '對念書沒有興趣',
+        '不知道自己要讀甚麼樣的學校/科系',
+        '想先出社會累積經驗',
+        '現正就讀大專，無意升學就讀研究所',
+        '其他(請說明)%&input%'
+      ],
+      { idx: '37-1', ansIdx: ['2', '3'] }
+    )
   ]
 }
 

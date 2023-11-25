@@ -19,14 +19,96 @@ allQ.forEach((item: BigQ) => {
   })
 })
 
-const nameInput=ref<HTMLInputElement|null>(null)
+const nameInput = ref<HTMLInputElement | null>(null)
+
+const doCheck = (val: string) => {
+  let newVal
+  if (val.includes('%&')) {
+    newVal = val.split('%')
+    newVal.forEach((item) => {
+      if (item.includes('&select')) {
+        item = item.replace('&select', '')
+        try {
+          if (!(JSON.parse(item)?.length > 0)) {
+            console.log(JSON.parse(item))
+            throw new Error()
+          }
+        } catch (error) {
+          throw new Error('請勾選額外項目')
+        }
+      } else if (item.includes('&')) {
+        item = item.replace('&', '')
+        item = item.trim()
+        if (!item) {
+          throw new Error('請填寫輸入框內容')
+        }
+      }
+    })
+  } else {
+    val = val.trim()
+    if (val.length == 0) {
+      throw new Error('未勾選任何項目')
+    }
+  }
+}
+/**
+ *
+ * @param q
+ * @returns 是否需要檢查
+ */
+const checkRequire = (q: Question) => {
+  if (!q.require) return false
+  console.log(q.require?.idx)
+
+  const reqBigIdx = q.require?.idx.split('-')?.[0] ?? ''
+
+  const reqSmallIdx = q.require?.idx ?? ''
+  if (!reqSmallIdx || !reqBigIdx) {
+    return false
+  }
+
+  if (Array.isArray(q.require?.ansIdx)) {
+    for (const item of q.require.ansIdx) {
+      if (ans[reqBigIdx][reqSmallIdx].split('-')?.[0] == item) {
+        return true
+      }
+    }
+  } else {
+    if (ans[reqBigIdx][reqSmallIdx].split('-')?.[0] != q.require?.ansIdx) {
+      return true
+    }
+  }
+}
+
+const checkValue = (q: Question) => {
+  const bigIdx = q.idx.split('-')?.[0]
+  const smallIdx = q.idx
+  const val = ans[bigIdx][smallIdx]
+  if (!checkRequire(q)) {
+    return
+  }
+  try {
+    if (val instanceof Array) {
+      if (val.length == 0) {
+        throw { idx: q.idx, message: '未勾選任何項目' }
+      }
+      val.forEach((item) => {
+        doCheck(item)
+      })
+    } else if (typeof val === 'string') {
+      doCheck(val)
+    }
+  } catch (error: any) {
+    throw { idx: q.idx, message: error.message }
+  }
+}
 
 const submit = () => {
   let reqAns: { [key: string]: any } = {}
 
   if (!name.value) {
     alert('請輸入姓名')
-    nameInput.value?.focus();
+    nameInput.value?.focus()
     return
   }
 
@@ -45,14 +127,37 @@ const submit = () => {
       }
     }
   }
+
+  try {
+    allQ.forEach((item: BigQ) => {
+      item.ageArea.includes(selectAgeArea.value) &&
+        item.questions.forEach((q: Question) => {
+          checkValue(q)
+        })
+    })
+  } catch (error: any) {
+    const { idx, message } = error as { idx: string; message: string }
+    const targetQuestion = document.getElementById('q' + idx)
+    const top = targetQuestion?.offsetTop ?? 0
+
+    document.querySelector('html')?.scroll({
+      top: top - 80,
+      behavior: 'smooth'
+    })
+
+    alert('題號' + idx + ':' + message)
+    return
+  }
+
   const form = {
     userName: name.value,
     answer: reqAns
   }
-  api.post('/survey', form).then((res) => {
-    alert('送出成功')
-    location.reload()
-  })
+  console.log('submit', form)
+  // api.post('/survey', form).then((res) => {
+  //   alert('送出成功')
+  //   location.reload()
+  // })
 }
 </script>
 
@@ -62,7 +167,7 @@ const submit = () => {
       <h2>兒少生活樣態訪視檢視清單</h2>
       <div class="name-box">
         <label for="name">姓名：</label>
-        <input type="text" id="name" v-model="name" ref="nameInput"/>
+        <input type="text" id="name" v-model="name" ref="nameInput" />
       </div>
       <div class="name-box">
         <label for="">年齡層：</label>
@@ -153,7 +258,6 @@ const submit = () => {
       position: sticky;
       top: 0;
       background-color: white;
-      
     }
     border-radius: 10px;
     margin: 1rem auto;

@@ -50,12 +50,20 @@ export class Question {
   type: string
   question: string
   option: string[]
+  require: { idx: string; ansIdx: string } | null = null
 
-  constructor(idx: string, type: string, question: string, option: string[]) {
+  constructor(
+    idx: string,
+    type: string,
+    question: string,
+    option: string[],
+    require?: { idx: string; ansIdx: string|string[] }
+  ) {
     this.idx = idx
     this.type = type
     this.question = question
     this.option = option
+    this.require = require ?? null
   }
 }
 const q1: BigQ = {
@@ -74,17 +82,17 @@ const q1: BigQ = {
   questions: [
     new Question('1-1', 'single', '早餐', [
       '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
+      '有吃一周約%&input{"type":"number","class":"days","max":"6","min":"1"}%天',
       '幾乎沒吃'
     ]),
     new Question('1-2', 'single', '午餐', [
       '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
+      '有吃一周約%&input{"type":"number","class":"days","max":"6","min":"1"}%天',
       '幾乎沒吃'
     ]),
     new Question('1-3', 'single', '晚餐', [
       '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
+      '有吃一周約%&input{"type":"number","class":"days","max":"6","min":"1"}%天',
       '幾乎沒吃'
     ]),
     new Question('1-4', 'multiple', '兒少未吃三餐的主要原因[可複選]', [
@@ -129,17 +137,17 @@ const q2: BigQ = {
   questions: [
     new Question('2-1', 'single', '早餐', [
       '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
+      '有吃一周約%&input{"type":"number","class":"days","max":"6","min":"1"}%天',
       '幾乎沒吃'
     ]),
     new Question('2-2', 'single', '午餐', [
       '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
+      '有吃一周約%&input{"type":"number","class":"days","max":"6","min":"1"}%天',
       '幾乎沒吃'
     ]),
     new Question('2-3', 'single', '晚餐', [
       '都吃',
-      '有吃一周約%&input{"type":"number","class":"days"}%天',
+      '有吃一周約%&input{"type":"number","class":"days","max":"6","min":"1"}%天',
       '幾乎沒吃'
     ]),
     new Question('2-4', 'multiple', '兒少未吃三餐的主要原因[可複選]', [
@@ -382,25 +390,31 @@ const q12: BigQ = {
   label: '兒少最常和朋友一起做的事【可複選】',
   ageArea: [AgeGroup.ELEMENTARY, AgeGroup.JUNIOR_HIGH, AgeGroup.HIGH_SCHOOL, AgeGroup.COLLEGE],
   questions: [
-    new Question('12-1', 'multiple', '', [
-      '聊天',
-      '看電視電影',
-      '運動',
-      '吃東西',
-      '參加文藝活動',
-      '逛街',
-      '跳舞',
-      '唱KTV',
-      '參加公益性服務活動',
-      '研習功課',
-      '閱讀書報',
-      '上網、Facebook、LINE',
-      '郊遊/戶外活動',
-      '參加演唱會或藝人簽唱會',
-      '線上遊戲',
-      '參加宗教活動',
-      '其他(請說明)：%&input%'
-    ])
+    new Question(
+      '12-1',
+      'multiple',
+      '',
+      [
+        '聊天',
+        '看電視電影',
+        '運動',
+        '吃東西',
+        '參加文藝活動',
+        '逛街',
+        '跳舞',
+        '唱KTV',
+        '參加公益性服務活動',
+        '研習功課',
+        '閱讀書報',
+        '上網、Facebook、LINE',
+        '郊遊/戶外活動',
+        '參加演唱會或藝人簽唱會',
+        '線上遊戲',
+        '參加宗教活動',
+        '其他(請說明)：%&input%'
+      ],
+      { idx: '11-1', ansIdx: '1' }
+    )
   ]
 }
 const q13: BigQ = {
@@ -419,7 +433,7 @@ const q14: BigQ = {
   idx: '14',
   label: '14 兒少是否與交往中男/女朋友發生衝突？',
   ageArea: [AgeGroup.ELEMENTARY, AgeGroup.JUNIOR_HIGH, AgeGroup.HIGH_SCHOOL, AgeGroup.COLLEGE],
-  questions: [new Question('14-1', 'single', '', ['從未', '很少', '有時候', '經常', '不確定'])]
+  questions: [new Question('14-1', 'single', '', ['從未', '很少', '有時候', '經常', '不確定'],{ idx: '13-1', ansIdx: '1'}),]
 }
 const q15: BigQ = {
   /**
@@ -779,7 +793,7 @@ const q28: BigQ = {
       '無固定上班時間',
       '建教合作',
       '其他，請說明%&input%'
-    ])
+    ],{idx:'27-1',ansIdx:'1'}),
   ]
 }
 const q29: BigQ = {
@@ -802,7 +816,7 @@ const q29: BigQ = {
       '勞務類（如：體力工、清潔工、農林漁牧類工作等',
       '教學類（如：家教、補習班老師等',
       '其他 ( 請說明 )%&input%'
-    ])
+    ],{idx:'27-1',ansIdx:'1'})
   ]
 }
 
@@ -826,7 +840,7 @@ const q30: BigQ = {
       '20-30小時',
       '30-40小時',
       '40小時以上'
-    ])
+    ],{idx:'27-1',ansIdx:'1'})
   ]
 }
 const q31: BigQ = {
@@ -842,7 +856,7 @@ const q31: BigQ = {
     AgeGroup.HIGH_SCHOOL,
     AgeGroup.COLLEGE
   ],
-  questions: [new Question('31-1', 'single', '', ['%&input{"type": "number"}%元'])]
+  questions: [new Question('31-1', 'single', '', ['%&input{"type": "number"}%元'],{idx:'27-1',ansIdx:'1'})]
 }
 const q32: BigQ = {
   /**
@@ -867,7 +881,7 @@ const q32: BigQ = {
       '儲蓄',
       '增加社會經驗',
       '其他(請說明)%&input%'
-    ])
+    ],{idx:'27-1',ansIdx:'1'})
   ]
 }
 
@@ -1002,7 +1016,7 @@ const q37: BigQ = {
     AgeGroup.HIGH_SCHOOL,
     AgeGroup.COLLEGE
   ],
-  questions: [new Question('37-1', 'multiple', '', ['是', '否', '尚未決定'])]
+  questions: [new Question('37-1', 'single', '', ['是', '否(續答下題)', '尚未決定(續答下題)'])]
 }
 const q38: BigQ = {
   /**
@@ -1018,7 +1032,7 @@ const q38: BigQ = {
     AgeGroup.COLLEGE
   ],
   questions: [
-    new Question('38-1', 'multiple', '', [
+    new Question('38-1', 'single', '', [
       '經濟因素',
       '健康因素',
       '對念書沒有興趣',
@@ -1026,7 +1040,7 @@ const q38: BigQ = {
       '想先出社會累積經驗',
       '現正就讀大專，無意升學就讀研究所',
       '其他(請說明)%&input%'
-    ])
+    ],{idx:'37-1',ansIdx:['2','3']})
   ]
 }
 

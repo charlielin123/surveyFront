@@ -56,14 +56,14 @@ const lastValue = computed(() => {
     if (s.includes('&input')) {
       output += `%&${state.inputValue}%`
     } else if (s.includes('&select')) {
-      output += ''
+      output += '%&select' + JSON.stringify(state.selected) + '%'
     } else {
       output += s
     }
   })
-  if (state.selected.length > 0) {
-    output = output + '%&select' + JSON.stringify(state.selected) + '%'
-  }
+  // if (state.selected.length > 0) {
+  //   output = output + '%&select' + JSON.stringify(state.selected) + '%'
+  // }
 
   return props.optionNum + '-' + output
 })

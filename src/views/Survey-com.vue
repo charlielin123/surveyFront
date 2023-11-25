@@ -153,11 +153,11 @@ const submit = () => {
     userName: name.value,
     answer: reqAns
   }
-  console.log('submit', form)
-  // api.post('/survey', form).then((res) => {
-  //   alert('送出成功')
-  //   location.reload()
-  // })
+
+  api.post('/survey', form).then((res) => {
+    alert('送出成功')
+    location.reload()
+  })
 }
 </script>
 

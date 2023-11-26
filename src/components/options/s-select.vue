@@ -86,6 +86,8 @@ const middleValue = computed({
     gap: 0.5rem;
 
     align-items: center;
+
+
   }
   input {
     height: 1.5rem;

@@ -125,7 +125,7 @@ const customLabel = computed(() => {
           ? h(
               'div',
               { class: 'dS' },
-              obj?.options?.map((i:string) => {
+              obj?.options?.map((i: string) => {
                 const id = generateId()
                 return h('div', [
                   h('input', {
@@ -176,7 +176,12 @@ onMounted(() => {
 .select {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
+  label {
+    &:has(.dS) {
+      flex-direction: column;
+    }
+  }
 }
 
 .dS {
@@ -185,5 +190,16 @@ onMounted(() => {
   & > div {
     display: flex;
   }
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
 }
 </style>

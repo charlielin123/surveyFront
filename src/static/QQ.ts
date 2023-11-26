@@ -774,7 +774,7 @@ const q27: BigQ = {
     AgeGroup.HIGH_SCHOOL,
     AgeGroup.COLLEGE
   ],
-  questions: [new Question('27-1', 'single', '', ['有', '沒有'])]
+  questions: [new Question('27-1', 'single', '', ['有（續答下面5題）', '沒有'])]
 }
 
 const q28: BigQ = {

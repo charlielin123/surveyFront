@@ -57,14 +57,13 @@ const doCheck = (val: string) => {
  * @returns 是否需要檢查
  */
 const checkRequire = (q: Question) => {
-  if (!q.require) return false
-  console.log(q.require?.idx)
+  if (!q.require) return true
 
   const reqBigIdx = q.require?.idx.split('-')?.[0] ?? ''
 
   const reqSmallIdx = q.require?.idx ?? ''
   if (!reqSmallIdx || !reqBigIdx) {
-    return false
+    return true
   }
 
   if (Array.isArray(q.require?.ansIdx)) {
@@ -74,9 +73,18 @@ const checkRequire = (q: Question) => {
       }
     }
   } else {
-    if (ans[reqBigIdx][reqSmallIdx].split('-')?.[0] != q.require?.ansIdx) {
+    if (ans[reqBigIdx][reqSmallIdx].split('-')?.[0] == q.require?.ansIdx) {
       return true
     }
+  }
+}
+
+class CustomError extends Error {
+  idx: string
+  constructor(message: string, idx: string) {
+    super(message)
+    this.name = 'CustomError'
+    this.idx = idx
   }
 }
 
@@ -90,7 +98,7 @@ const checkValue = (q: Question) => {
   try {
     if (val instanceof Array) {
       if (val.length == 0) {
-        throw { idx: q.idx, message: '未勾選任何項目' }
+        throw new CustomError('未勾選任何項目', q.idx)
       }
       val.forEach((item) => {
         doCheck(item)
@@ -99,7 +107,7 @@ const checkValue = (q: Question) => {
       doCheck(val)
     }
   } catch (error: any) {
-    throw { idx: q.idx, message: error.message }
+    throw new CustomError(error.message, q.idx)
   }
 }
 

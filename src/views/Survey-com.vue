@@ -111,6 +111,8 @@ const checkValue = (q: Question) => {
   }
 }
 
+
+
 const submit = () => {
   let reqAns: { [key: string]: any } = {}
 
@@ -185,7 +187,7 @@ const submit = () => {
           <option value="ELEMENTARY">國小</option>
           <option value="JUNIOR_HIGH">國中</option>
           <option value="HIGH_SCHOOL">高中</option>
-          <option value="COLLEGE">大專</option>
+          <option value="COLLEGE">大專/大學</option>
         </select>
       </div>
     </div>
@@ -202,7 +204,9 @@ const submit = () => {
                 :questionNum="smallQ.idx"
                 :question="smallQ.question"
                 :multiple="smallQ.type == 'multiple'"
+                v-if="checkRequire(smallQ)"
               ></s-select>
+              <template v-else>不需填寫</template>
             </template>
           </div>
         </template>
@@ -277,6 +281,9 @@ const submit = () => {
     }
   }
   .big-q {
+    &:not(:has(.small-q)) {
+      display: none;
+    }
     & > div {
       border: solid rgba(128, 128, 128, 0.53);
       border-radius: 10px;

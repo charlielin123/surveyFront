@@ -267,7 +267,14 @@ const q7: BigQ = {
   idx: '7',
   label: '兒童目前實際托育安排【可複選】',
   ageArea: [AgeGroup.PRESCHOOL],
-  questions: [new Question('7-1', 'multiple', '', ['有', '無'])]
+  questions: [new Question('7-1', 'multiple', '', [
+    '由父母親自照顧 ',
+    '由父母以外的親屬照顧 ',
+    '居家式托育人員（保母）照顧',
+    '托嬰中心 ',
+    '幼兒園 ',
+    '其他(請說明)：%&input%',
+  ])]
 }
 const q8: BigQ = {
   /**

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import {ref} from 'vue';
-const test=ref('')
+const test=ref('') 
 </script>
 
 <template>

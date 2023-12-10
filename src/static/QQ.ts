@@ -267,14 +267,16 @@ const q7: BigQ = {
   idx: '7',
   label: '兒童目前實際托育安排【可複選】',
   ageArea: [AgeGroup.PRESCHOOL],
-  questions: [new Question('7-1', 'multiple', '', [
-    '由父母親自照顧 ',
-    '由父母以外的親屬照顧 ',
-    '居家式托育人員（保母）照顧',
-    '托嬰中心 ',
-    '幼兒園 ',
-    '其他(請說明)：%&input%',
-  ])]
+  questions: [
+    new Question('7-1', 'multiple', '', [
+      '由父母親自照顧 ',
+      '由父母以外的親屬照顧 ',
+      '居家式托育人員（保母）照顧',
+      '托嬰中心 ',
+      '幼兒園 ',
+      '其他(請說明)：%&input%'
+    ])
+  ]
 }
 const q8: BigQ = {
   /**
@@ -625,8 +627,8 @@ const q21: BigQ = {
     // AgeGroup.PRESCHOOL,
     AgeGroup.ELEMENTARY,
     AgeGroup.JUNIOR_HIGH,
-    AgeGroup.HIGH_SCHOOL
-    // AgeGroup.COLLEGE
+    AgeGroup.HIGH_SCHOOL,
+    AgeGroup.COLLEGE
   ],
   questions: [new Question('21-1', 'single', '', ['有', '沒有', '未就學不適用'])]
 }
@@ -641,7 +643,7 @@ const q22: BigQ = {
     // AgeGroup.PRESCHOOL,
     AgeGroup.ELEMENTARY,
     AgeGroup.JUNIOR_HIGH,
-    AgeGroup.HIGH_SCHOOL,
+    AgeGroup.HIGH_SCHOOL
     // AgeGroup.COLLEGE
   ],
   questions: [
